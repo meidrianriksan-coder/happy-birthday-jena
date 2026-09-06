@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Warna Aksen Navy & Background Putih */
+            --navy-main: #002366;
+            --navy-dark: #001745;
+            --navy-flap: #002d82;
+            --bg-page: #ffffff;
+            
+            /* Wax Seal & Pita Emas */
+            --gold-light: #fef08a;
+            --gold-main: #fbbf24;
+            --gold-dark: #b45309;
+            --gold-ribbon: linear-gradient(135deg, #fef08a 0%, #fbbf24 50%, #d97706 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-page);
+            min-height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 40px 20px;
+            
+            /* Garis Aksen Navy di Atas & Bawah */
+            border-top: 18px solid var(--navy-main);
+            border-bottom: 18px solid var(--navy-main);
+
+            /* Transisi Smooth Masuk/Keluar Halaman */
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body.page-enter {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        body.page-exit {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+
+        /* Kontainer Utama Presisi Center */
+        .main-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 650px;
+            z-index: 2;
+            text-align: center;
+        }
+
+        /* Judul Kaligrafi */
+        .title-hbd {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.2rem;
+            color: var(--navy-main);
+            margin-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0, 35, 102, 0.1);
+        }
+
+        /* Pembungkus Amplop Mewah */
+        .envelope-wrapper {
+            position: relative;
+            width: 380px;
+            height: 250px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            perspective: 1000px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .envelope-wrapper:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        /* Bodi Utama Amplop Navy */
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: var(--navy-main);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 35, 102, 0.25);
+            overflow: hidden;
+        }
+
+        /* Pita Emas Mewah Melintang */
+        .ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36px;
+            height: 100%;
+            background: var(--gold-ribbon);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        /* Lipatan Samping & Bawah Amplop */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 190px solid var(--navy-dark);
+            border-right: 190px solid var(--navy-dark);
+            border-top: 130px solid transparent;
+            border-bottom: 120px solid var(--navy-dark);
+            z-index: 2;
+        }
+
+        /* Lipatan Atas (Flap) Amplop */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 190px solid transparent;
+            border-right: 190px solid transparent;
+            border-top: 145px solid var(--navy-flap);
+            z-index: 3;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Animasi Buka Amplop saat Diklik */
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        /* Wax Seal (Stempel Lilin Emas) */
+        .wax-seal {
+            position: absolute;
+            top: 130px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 62px;
+            height: 62px;
+            background: radial-gradient(circle at 35% 35%, var(--gold-light), var(--gold-main) 60%, var(--gold-dark) 100%);
+            border-radius: 50%;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .envelope-wrapper.open .wax-seal {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 0;
+        }
+
+        .wax-seal::before {
+            content: '';
+            width: 46px;
+            height: 46px;
+            border: 2px dashed rgba(255, 255, 255, 0.75);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        /* Teks Instruksi */
+        .instruction {
+            font-size: 0.95rem;
+            color: var(--navy-main);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .envelope-wrapper:hover + .instruction,
+        .instruction:hover {
+            color: #0284c7;
+        }
+
+        /* Ornamen Doodle Warna Navy */
+        .doodle-gift {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            width: 95px;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .doodle-balloons {
+            position: absolute;
+            bottom: 35px;
+            right: 40px;
+            width: 85px;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        /* Responsif Layar HP */
+        @media (max-width: 600px) {
+            body {
+                border-top-width: 12px;
+                border-bottom-width: 12px;
+            }
+            .title-hbd {
+                font-size: 3.2rem;
+            }
+            .envelope-wrapper {
+                width: 300px;
+                height: 200px;
+            }
+            .envelope::before {
+                border-left-width: 150px;
+                border-right-width: 150px;
+                border-top-width: 100px;
+                border-bottom-width: 100px;
+            }
+            .envelope-flap {
+                border-left-width: 150px;
+                border-right-width: 150px;
+                border-top-width: 115px;
+            }
+            .wax-seal {
+                top: 100px;
+                width: 52px;
+                height: 52px;
+            }
+            .wax-seal::before {
+                width: 38px;
+                height: 38px;
+            }
+            .doodle-gift {
+                width: 65px;
+                bottom: 15px;
+                left: 15px;
+            }
+            .doodle-balloons {
+                width: 60px;
+                bottom: 20px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <!-- Judul -->
+        <h1 class="title-hbd">Happy Birthday!</h1>
+
+        <!-- Amplop Navy & Pita Emas -->
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="openAndNext()">
+            <div class="envelope">
+                <div class="ribbon-vertical"></div>
+                <div class="envelope-flap"></div>
+                <div class="wax-seal"></div>
+            </div>
+        </div>
+
+        <!-- Teks Instruksi -->
+        <p class="instruction" onclick="openAndNext()">Click the seal to open</p>
+    </div>
+
+    <!-- Doodle Kado Warna Navy -->
+    <svg class="doodle-gift" viewBox="0 0 100 100" fill="none" stroke="#002366" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20,50 L80,50 L80,90 L20,90 Z" />
+        <path d="M15,35 L85,35 L85,50 L15,50 Z" />
+        <path d="M50,35 L50,90" />
+        <path d="M50,35 C40,20 25,25 35,35 Z" />
+        <path d="M50,35 C60,20 75,25 65,35 Z" />
+        <path d="M25,20 L20,10" />
+        <path d="M35,15 L35,5" />
+        <path d="M75,20 L80,10" />
+        <circle cx="28" cy="8" r="1.5" fill="#002366" />
+        <circle cx="72" cy="8" r="1.5" fill="#002366" />
+    </svg>
+
+    <!-- Doodle Balon Warna Navy -->
+    <svg class="doodle-balloons" viewBox="0 0 100 100" fill="none" stroke="#002366" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="40" cy="35" rx="18" ry="22" />
+        <path d="M40,57 L38,62 L42,62 Z" />
+        <path d="M40,62 Q35,75 50,90" />
+        <ellipse cx="68" cy="45" rx="15" ry="18" />
+        <path d="M68,63 L66,67 L70,67 Z" />
+        <path d="M68,67 Q72,78 52,90" />
+    </svg>
+
+    <!-- JavaScript Navigasi & Animasi Transisi -->
+    <script>
+        let isOpening = false;
+
+        // Membuka Amplop & Berpindah Halaman
+        function openAndNext() {
+            if (isOpening) return;
+            isOpening = true;
+
+            const envelope = document.getElementById('envelopeWrapper');
+            envelope.classList.add('open');
+
+            // Transisi fade-out halus
+            setTimeout(() => {
+                document.body.classList.remove('page-enter');
+                document.body.classList.add('page-exit');
+            }, 500);
+
+            // Pindah Halaman ke ucapan.html
+            setTimeout(() => {
+                window.location.href = "ucapan.html";
+            }, 1000);
+        }
+
+        // Reset Tampilan ketika Menekan Back Button di Browser
+        function initPage() {
+            isOpening = false;
+            const envelope = document.getElementById('envelopeWrapper');
+            if (envelope) {
+                envelope.classList.remove('open');
+            }
+            document.body.classList.remove('page-exit');
+            
+            setTimeout(() => {
+                document.body.classList.add('page-enter');
+            }, 50);
+        }
+
+        // Inisialisasi Pertama
+        window.addEventListener('DOMContentLoaded', initPage);
+
+        // Menangani BFCache Browser (Back/Forward Navigation)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                initPage();
+            }
+        });
+    </script>
+</body>
+</html>

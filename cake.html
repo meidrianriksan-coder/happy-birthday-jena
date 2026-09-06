@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cake Section - Scrapbook</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Sacramento&family=Caveat:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-main: #0a192f;
+            --navy-card: #112240;
+            --navy-dark: #020c1b;
+            --accent-blue: #38bdf8;
+            --off-white: rgba(248, 246, 240, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #020c1b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            color: #ffffff;
+            position: relative;
+
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(30, 58, 138, 0.2) 0%, rgba(10, 25, 47, 0.6) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body.page-enter {
+            opacity: 1;
+        }
+
+        body.page-exit {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+
+        /* Keyframes Animasi Masuk Halus */
+        @keyframes elementSmoothEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.92);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes tvEnter {
+            0% { opacity: 0; transform: translateY(30px) rotate(-3deg) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) rotate(-3deg) scale(1); }
+        }
+
+        @keyframes stampEnter {
+            0% { opacity: 0; transform: translateY(30px) rotate(-6deg) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) rotate(-6deg) scale(1); }
+        }
+
+        @keyframes clipboardEnter {
+            0% { opacity: 0; transform: translateY(30px) rotate(3deg) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) rotate(3deg) scale(1); }
+        }
+
+        @keyframes plaidEnter {
+            0% { opacity: 0; transform: translateY(30px) rotate(-2deg) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) rotate(-2deg) scale(1); }
+        }
+
+        @keyframes gridEnter {
+            0% { opacity: 0; transform: translateY(30px) rotate(4deg) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) rotate(4deg) scale(1); }
+        }
+
+        /* Tombol Kembali */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: elementSmoothEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.1s;
+        }
+
+        .back-btn:hover {
+            background: #ffffff;
+            color: var(--navy-dark);
+        }
+
+        /* Container Canvas Utama */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            height: 600px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        /* Hover Feedback untuk Elemen Foto */
+        .clickable-photo {
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .clickable-photo:hover {
+            filter: brightness(1.1);
+        }
+
+        /* 1. Plaid Pattern Background Paper */
+        .plaid-paper {
+            position: absolute;
+            top: 140px;
+            left: 150px;
+            width: 480px;
+            height: 220px;
+            background-color: #f8fafc;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(30, 58, 138, 0.25), rgba(30, 58, 138, 0.25) 15px, transparent 15px, transparent 30px),
+                repeating-linear-gradient(90deg, rgba(30, 58, 138, 0.25), rgba(30, 58, 138, 0.25) 15px, transparent 15px, transparent 30px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            z-index: 1;
+            opacity: 0;
+            animation: plaidEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        /* 2. Stamp Frame Navy */
+        .stamp-frame {
+            position: absolute;
+            top: 120px;
+            left: 200px;
+            width: 220px;
+            height: 260px;
+            background: var(--navy-card);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: stampEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.35s;
+        }
+
+        .stamp-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--off-white);
+        }
+
+        .stamp-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ribbon {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+            z-index: 4;
+        }
+
+        /* 3. Clipboard Card */
+        .clipboard-card {
+            position: absolute;
+            top: 100px;
+            left: 410px;
+            width: 200px;
+            height: 270px;
+            background: #ffffff;
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            z-index: 2;
+            opacity: 0;
+            animation: clipboardEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.5s;
+        }
+
+        .clip {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 25px;
+            background: var(--navy-card);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px 6px 0 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .clipboard-img {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .clipboard-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 4. TV Retro */
+        .retro-tv {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            width: 220px;
+            height: 150px;
+            background: #1e293b;
+            border: 4px solid #334155;
+            border-radius: 24px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 5;
+            opacity: 0;
+            animation: tvEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.65s;
+        }
+
+        .tv-screen {
+            width: 130px;
+            height: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .tv-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tv-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .tv-dial {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #475569;
+            border: 2px solid #64748b;
+        }
+
+        .tv-speaker {
+            width: 30px;
+            height: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .tv-speaker span {
+            width: 100%;
+            height: 3px;
+            background: #475569;
+            border-radius: 2px;
+        }
+
+        /* 5. Vinyl Music Button & Arrow Marker */
+        @keyframes spinVinyl {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .vinyl-btn-wrapper {
+            position: absolute;
+            top: 310px;
+            left: 480px;
+            z-index: 6;
+            opacity: 0;
+            animation: elementSmoothEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.8s;
+        }
+
+        .vinyl-btn {
+            width: 110px;
+            height: 110px;
+            background: #020c1b;
+            border-radius: 50%;
+            border: 2px solid #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            cursor: pointer;
+            animation: spinVinyl 6s linear infinite;
+        }
+
+        .vinyl-btn:hover {
+            animation-play-state: paused;
+        }
+
+        .vinyl-center {
+            width: 42px;
+            height: 42px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .vinyl-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            font-size: 0.55rem;
+            color: #fff;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* CONTAINER TANDA PANAH + NOTE DI SAMPING */
+        .arrow-note-container {
+            position: absolute;
+            top: 350px;
+            left: 580px;
+            z-index: 7;
+            pointer-events: none;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: elementSmoothEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1.0s;
+        }
+
+        .hand-drawn-arrow {
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            animation: pulseArrow 2s ease-in-out infinite alternate;
+        }
+
+        .arrow-line {
+            stroke-dasharray: 5 3;
+        }
+
+        .cute-note {
+            font-family: 'Caveat', cursive;
+            font-size: 1.25rem;
+            line-height: 1.1;
+            color: var(--accent-blue);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            transform: rotate(-3deg);
+            max-width: 90px;
+            white-space: normal;
+        }
+
+        @keyframes pulseArrow {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-3px) scale(1.03); }
+        }
+
+        /* 6. Teks Sacramento Decorative */
+        .cursive-decor {
+            position: absolute;
+            bottom: 50px;
+            left: 360px;
+            font-family: 'Sacramento', cursive;
+            font-size: 4.2rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 1px;
+            z-index: 2;
+            user-select: none;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            text-transform: lowercase;
+            opacity: 0;
+            animation: elementSmoothEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.95s;
+        }
+
+        /* 7. Grid Foto Polaroid (Kanan) */
+        .photo-grid-right {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 110px);
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            z-index: 4;
+            opacity: 0;
+            animation: gridEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1.1s;
+        }
+
+        .grid-item {
+            width: 110px;
+            height: 130px;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* LIGHTBOX MODAL POP-UP FOTO */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 25, 47, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 85vw;
+            max-height: 85vh;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--navy-card);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: #ffffff;
+            color: #000;
+        }
+
+        @media (max-width: 900px) {
+            .canvas { transform: scale(0.75); }
+        }
+
+        @media (max-width: 600px) {
+            .canvas { transform: scale(0.5); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <a href="pilihan.html" class="back-btn" onclick="goBack(event)">← Kembali</a>
+
+    <div class="canvas">
+        <div class="plaid-paper"></div>
+
+        <!-- Stamp Frame -->
+        <div class="stamp-frame">
+            <span class="ribbon">🎀</span>
+            <div class="stamp-inner">
+                <img src="/our memories miror.PNG" alt="Photo 2" class="clickable-photo" onclick="openModal(this.src)">
+            </div>
+        </div>
+
+        <!-- Clipboard Card -->
+        <div class="clipboard-card">
+            <div class="clip"></div>
+            <div class="clipboard-img">
+                <img src="/our memories good.jpeg" alt="Photo 3" class="clickable-photo" onclick="openModal(this.src)">
+            </div>
+        </div>
+
+        <!-- Frame TV Retro -->
+        <div class="retro-tv">
+            <div class="tv-screen">
+                <img src="/our memories 1.1.jpeg" alt="Photo 1" class="clickable-photo" onclick="openModal(this.src)">
+            </div>
+            <div class="tv-controls">
+                <div class="tv-dial"></div>
+                <div class="tv-speaker">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vinyl Music Button Wrapper -->
+        <div class="vinyl-btn-wrapper">
+            <div class="vinyl-btn" onclick="toggleMusic()">
+                <div class="vinyl-center"></div>
+                <svg class="vinyl-text" viewBox="0 0 100 100">
+                    <path id="curve" fill="none" d="M 20, 50 A 30,30 0 1,1 80,50" />
+                    <text fill="#ffffff" font-size="9" letter-spacing="1">
+                        <textPath href="#curve">Listen to music</textPath>
+                    </text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Container Tanda Panah Kanan Bawah + Catatan di Samping -->
+        <div class="arrow-note-container">
+            <svg class="hand-drawn-arrow" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Garis panah melengkung ke kiri atas menuju piringan hitam -->
+                <path class="arrow-line" d="M 85,80 C 70,50 45,35 20,22" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" fill="none" />
+                <!-- Kepala panah -->
+                <path d="M 32,14 L 15,18 L 20,36" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            </svg>
+            <div class="cute-note">klik piringan hitamnya!</div>
+        </div>
+
+        <!-- Teks Script Aesthetic -->
+        <div class="cursive-decor">
+            our memories
+        </div>
+
+        <!-- Grid Foto Polaroid (Kanan) -->
+        <div class="photo-grid-right">
+            <div class="grid-item"><img src="/our memories juring.jpeg" alt="Photo 4" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="/our memories nothing.jpeg" alt="Photo 5" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="/our memories aib jena.jpeg" alt="Photo 6" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="/live tiktok.jpg" alt="Photo 7" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="/rumah jena.jpg" alt="Photo 8" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="/our memories cute.jpeg" alt="Photo 9" class="clickable-photo" onclick="openModal(this.src)"></div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal Pop-Up -->
+    <div class="modal-overlay" id="photoModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeModal()">&times;</div>
+            <img id="modalImg" src="" alt="Enlarged View">
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('page-enter');
+        });
+
+        function goBack(event) {
+            event.preventDefault();
+            document.body.classList.remove('page-enter');
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = 'pilihan.html';
+            }, 500);
+        }
+
+        /* Mengarahkan ke halaman music.html dengan efek animasi page-exit */
+        function toggleMusic() {
+            document.body.classList.remove('page-enter');
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = 'music.html';
+            }, 500);
+        }
+
+        /* Fungsi Lightbox Modal Foto */
+        function openModal(imageSrc) {
+            const modal = document.getElementById('photoModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = imageSrc;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Zainatul Mukaromah!</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('/foto1.2.jpeg') no-repeat center center/cover;
+            
+            /* Transisi Halus (Smooth) */
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Efek Transisi Keluar saat Tombol Diklik */
+        body.page-exit {
+            opacity: 0;
+            transform: scale(1.05); /* Sedikit zoom-in agar transisi terasa cinematic */
+            pointer-events: none;
+        }
+
+        .dim-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #ffffff;
+            padding: 0 20px;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-text {
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #f0f9ff;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .hbd-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            font-weight: 400;
+            line-height: 1.25;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .hbd-title span {
+            display: inline-block;
+        }
+
+        .sub-message {
+            font-size: 1rem;
+            font-weight: 300;
+            font-style: italic;
+            color: #f1f5f9;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+
+        .bottom-action {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            text-align: center;
+        }
+
+        .btn-click-here {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 10px 26px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: inline-block;
+        }
+
+        .btn-click-here:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #0284c7;
+            transform: translateY(-2px);
+        }
+
+        .doodle-gift {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 85px;
+            opacity: 0.85;
+            z-index: 2;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+        }
+
+        .doodle-balloons {
+            position: absolute;
+            bottom: 35px;
+            right: 30px;
+            width: 75px;
+            opacity: 0.85;
+            z-index: 2;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+        }
+
+        @media (max-width: 768px) {
+            .hbd-title {
+                font-size: 3rem;
+                line-height: 1.3;
+            }
+            .hbd-title span.break-mobile {
+                display: block;
+            }
+            .date-text {
+                font-size: 0.95rem;
+            }
+            .sub-message {
+                font-size: 0.85rem;
+            }
+            .doodle-gift {
+                width: 60px;
+                bottom: 20px;
+                left: 15px;
+            }
+            .doodle-balloons {
+                width: 55px;
+                bottom: 25px;
+                right: 15px;
+            }
+            .bottom-action {
+                bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dim-overlay"></div>
+
+    <div class="hero-content">
+        <p class="date-text">09-09-07</p>
+        <h1 class="hbd-title">
+            <span>Happy Birthday</span> 
+            <span class="break-mobile">Zainatul Mukaromah!</span>
+        </h1>
+        <p class="sub-message">I hope this little gift will make you happy 🤍</p>
+    </div>
+
+    <!-- Doodle Kado -->
+    <svg class="doodle-gift" viewBox="0 0 100 100" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20,50 L80,50 L80,90 L20,90 Z" />
+        <path d="M15,35 L85,35 L85,50 L15,50 Z" />
+        <path d="M50,35 L50,90" />
+        <path d="M50,35 C40,20 25,25 35,35 Z" />
+        <path d="M50,35 C60,20 75,25 65,35 Z" />
+        <path d="M25,20 L20,10" />
+        <path d="M35,15 L35,5" />
+        <path d="M75,20 L80,10" />
+        <circle cx="28" cy="8" r="1.5" fill="#ffffff" />
+        <circle cx="72" cy="8" r="1.5" fill="#ffffff" />
+    </svg>
+
+    <!-- Doodle Balon -->
+    <svg class="doodle-balloons" viewBox="0 0 100 100" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="40" cy="35" rx="18" ry="22" />
+        <path d="M40,57 L38,62 L42,62 Z" />
+        <path d="M40,62 Q35,75 50,90" />
+        <ellipse cx="68" cy="45" rx="15" ry="18" />
+        <path d="M68,63 L66,67 L70,67 Z" />
+        <path d="M68,67 Q72,78 52,90" />
+    </svg>
+
+    <!-- Tombol Click Here -->
+    <div class="bottom-action">
+        <a href="pilihan.html" class="btn-click-here" onclick="navigateToPilihan(event)">Click here</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        window.onload = () => {
+            confetti({
+                particleCount: 70,
+                spread: 60,
+                origin: { y: 0.7 },
+                colors: ['#ffffff', '#38bdf8', '#fef08a']
+            });
+        };
+
+        function navigateToPilihan(event) {
+            event.preventDefault();
+            // Tambahkan kelas page-exit untuk memulai animasi CSS
+            document.body.classList.add('page-exit');
+            
+            // Pindah halaman tepat setelah animasi CSS selesai (800ms)
+            setTimeout(() => {
+                window.location.href = 'pilihan.html';
+            }, 750); 
+        }
+    </script>
+</body>
+</html>

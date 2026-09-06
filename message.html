@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Message</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --navy-main: #002366;
+            --navy-dark: #001745;
+            --envelope-red: #d2d7f0;
+            --envelope-pocket: #d2d7f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            background: url('/foto1.2.jpeg') no-repeat center center/cover;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+
+            opacity: 0;
+            /* Dibuat lebih natural (0.8s) */
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.page-enter {
+            opacity: 1;
+        }
+
+        body.page-exit {
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 60, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        body.page-enter .overlay {
+            opacity: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1150px;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 40px;
+            align-items: center;
+            transition: filter 0.6s ease, transform 0.6s ease;
+        }
+
+        body.modal-active .container {
+            filter: blur(10px);
+            transform: scale(0.98);
+            pointer-events: none;
+        }
+
+        /* =========================================================
+           WIDGET AMPLOP MERAH ESTETIK
+        ========================================================= */
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            height: 300px;
+            margin: 0 auto;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            /* Transisi masuk diperhalus (0.8s) */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        body.page-enter .envelope-wrapper {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .envelope-back {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 230px;
+            background: var(--envelope-red);
+            border-radius: 12px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+            z-index: 1;
+        }
+
+        .preview-letter {
+            position: absolute;
+            bottom: 35px;
+            left: 5%;
+            width: 90%;
+            height: 220px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            z-index: 2;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            /* Transisi surat menyembul dibuat lebih natural (0.6s ease) */
+            transition: transform 0.6s ease;
+        }
+
+        .message-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .message-text p {
+            margin-bottom: 12px;
+        }
+
+        .preview-letter .message-text {
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 230px;
+            background: var(--envelope-pocket);
+            border-radius: 0 0 12px 12px;
+            z-index: 3;
+            clip-path: polygon(0% 0%, 50% 45%, 100% 0%, 100% 100%, 0% 100%);
+            box-shadow: inset 0 3px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Hover Effect: Naik pelan dan elegan */
+        .envelope-wrapper:hover .preview-letter {
+            transform: translateY(-25px);
+        }
+
+        .envelope-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Grid Foto Polaroid */
+        .polaroid-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            position: relative;
+        }
+
+        .polaroid-item {
+            background: #ffffff;
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+            cursor: pointer;
+            will-change: transform, box-shadow;
+            opacity: 0;
+            transform: translateY(30px);
+            /* Animasi polaroid masuk diperlambat & dismoothing */
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s ease,
+                        opacity 0.7s ease;
+        }
+
+        /* Delay bertahap saat halaman muncul (staggering) */
+        body.page-enter .polaroid-item:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0) rotate(-3deg);
+            transition-delay: 0.2s;
+        }
+
+        body.page-enter .polaroid-item:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0) rotate(4deg);
+            transition-delay: 0.35s;
+        }
+
+        body.page-enter .polaroid-item:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0) rotate(2deg);
+            transition-delay: 0.5s;
+        }
+
+        body.page-enter .polaroid-item:nth-child(5) {
+            opacity: 1;
+            transform: translateY(0) rotate(-4deg);
+            transition-delay: 0.65s;
+        }
+
+        /* Hover Polaroid melayang lembut */
+        .polaroid-item:hover {
+            transition-delay: 0s !important;
+            transform: scale(1.04) rotate(0deg) translateY(-6px) !important;
+            z-index: 10;
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.22);
+        }
+
+        .polaroid-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+        }
+
+        .doodle-heart,
+        .doodle-balloons {
+            position: absolute;
+            z-index: 3;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            opacity: 0;
+            transition: opacity 0.8s ease 0.8s;
+        }
+
+        .doodle-heart {
+            top: -20px;
+            right: -10px;
+            width: 60px;
+        }
+
+        .doodle-balloons {
+            bottom: -30px;
+            left: 45%;
+            width: 70px;
+        }
+
+        body.page-enter .doodle-heart,
+        body.page-enter .doodle-balloons {
+            opacity: 1;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            backdrop-filter: blur(6px);
+            transition: all 0.4s ease;
+            opacity: 0;
+        }
+
+        body.page-enter .back-btn {
+            opacity: 1;
+            transition: opacity 0.6s ease 0.2s, background 0.3s, color 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #ffffff;
+            color: var(--navy-main);
+        }
+
+        /* =========================================================
+           LIGHTBOX MODAL (SURAT & FOTO DIBUKA)
+        ========================================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 15, 45, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            /* Efek overlay memudar lembut */
+            transition: opacity 0.5s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px 35px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            transform: scale(0.92) translateY(15px);
+            /* Transisi Pop-up sangat smooth (0.5s) */
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+        }
+
+        .modal-overlay.active .modal-card.active {
+            display: block;
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-card .message-text {
+            font-size: 1.45rem;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .modal-polaroid {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+            max-width: 750px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.92) translateY(15px);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .modal-overlay.active .modal-polaroid.active {
+            display: grid;
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-polaroid .img-container {
+            background: #ffffff;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            border: 1px solid #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .modal-polaroid img {
+            width: 100%;
+            max-height: 55vh;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+        }
+
+        .modal-polaroid .photo-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 15px;
+        }
+
+        .modal-polaroid .photo-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .modal-polaroid .photo-subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: 1.55rem;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 38px;
+            height: 38px;
+            background: #ffffff;
+            color: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1);
+            background: #f1f5f9;
+        }
+
+        /* EFEK BALON & HEART MELAYANG (Diperlambat dari 3.5s menjadi 6s) */
+        .effects-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            bottom: -80px;
+            font-size: 2.2rem;
+            user-select: none;
+            /* Gerakan melayang naik sangat tenang (6 detik) */
+            animation: floatUp 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-115vh) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .envelope-wrapper {
+                max-width: 360px;
+                height: 260px;
+            }
+
+            .envelope-back, .envelope-pocket {
+                height: 200px;
+            }
+
+            .preview-letter {
+                height: 190px;
+            }
+
+            .polaroid-item img {
+                height: 140px;
+            }
+
+            .modal-card {
+                padding: 30px 22px;
+            }
+
+            .modal-card .message-text {
+                font-size: 1.3rem;
+            }
+
+            .modal-polaroid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 18px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .modal-polaroid .photo-info {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .modal-polaroid .photo-title {
+                font-size: 1.25rem;
+            }
+
+            .modal-polaroid .photo-subtitle {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="pilihan.html" class="back-btn" onclick="goBack(event)">← Kembali</a>
+    <div class="overlay"></div>
+
+    <div class="effects-container" id="effectsContainer"></div>
+
+    <div class="container">
+        <div class="envelope-wrapper" onclick="openLetterModal()">
+            <div class="envelope-back"></div>
+            <div class="preview-letter">
+                <div class="message-text">
+                    <p>happy birthday sayangggku🤍</p>
+                    <p>selamat ulang tahun yang ke 19. semoga di umur yang baru ini kamu selalu diberikan kesehatan...</p>
+                </div>
+            </div>
+            <div class="envelope-pocket"></div>
+        </div>
+
+        <div class="polaroid-grid">
+            <svg class="doodle-heart" viewBox="0 0 100 100" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+                <path d="M50,30 C35,10 10,25 25,55 L50,80 L75,55 C90,25 65,10 50,30 Z" />
+                <path d="M55,38 C45,22 25,32 35,55" stroke-width="2"/>
+            </svg>
+
+            <div class="polaroid-item" 
+                 data-title="Foto kamu waktu kecil" 
+                 data-subtitle="Gak nyangka kamu udah sejauh ini, tumbuh jadi orang yang hebat banget sayangkuu" 
+                 onclick="openPhotoModal(this)">
+                <img src="/jena bocil.jpeg" alt="Memory 1">
+            </div>
+
+            <div class="polaroid-item" 
+                 data-title="Wanita Karir" 
+                 data-subtitle="Gatau kenapa aku selalu bangga kalo liat foto ini, bukti perjuangan kamu meuju kehidupan dewasa, semangat sayang. I'm so proud of you." 
+                 onclick="openPhotoModal(this)">
+                <img src="/jena biru.jpeg" alt="Memory 2">
+            </div>
+
+            <div class="polaroid-item" 
+                 data-title="The baddest bitches are in Way Halom" 
+                 data-subtitle="Ini mah my mine guwehh, cakep banget anjirr...makin hari makin gemes dan makin spesial di mata aku." 
+                 onclick="openPhotoModal(this)">
+                <img src="/jena baddie.jpeg" alt="Memory 3">
+            </div>
+
+            <div class="polaroid-item" 
+                 data-title="Jena Kodok 🐸" 
+                 data-subtitle="One of My favorit photos of you" 
+                 onclick="openPhotoModal(this)">
+                <img src="/jena kodok.JPG" alt="Memory 4">
+            </div>
+
+            <svg class="doodle-balloons" viewBox="0 0 100 100" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round">
+                <ellipse cx="40" cy="35" rx="18" ry="22" />
+                <path d="M40,57 L38,62 L42,62 Z" />
+                <path d="M40,62 Q35,75 50,90" />
+                <ellipse cx="68" cy="45" rx="15" ry="18" />
+                <path d="M68,63 L66,67 L70,67 Z" />
+                <path d="M68,67 Q72,78 52,90" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-card" id="letterModal">
+            <div class="close-btn" onclick="closeModalDirect()">✕</div>
+            <div class="message-text">
+                <p>happy birthday sayangggku🤍</p>
+                <p>selamat ulang tahun yang ke 19. semoga di umur yang baru ini kamu selalu diberikan kesehatan, kebahagiaan, dimudahkan dalam segala urusan, dan semua hal yang kamu semogakan bisa tercapai satu persatu.</p>
+                <p>makasih yaa udah hadir di hidup aku, makasih udah nemenin aku sejauh ini. aku mungkin nggak selalu bisa jadi pasangan yang sempurna, tapi aku selalu berharap bisa terus ada di samping kamu, nemenin kamu di setiap proses dan perjalanan kamu.</p>
+                <p>semoga umur 19 ini jadi awal dari banyak hal baik buat kamu. jangan terlalu keras sama diri sendiri yaa, kamu udah hebat sampai di titik ini. 🤍</p>
+                <p>sekali lagi, happy 19th birthday sayanggg 🫶🏻<br>semoga kita bisa terus bikin banyak cerita dan kenangan bareng. i love youu ❤️</p>
+            </div>
+        </div>
+
+        <div class="modal-polaroid" id="photoModal">
+            <div class="close-btn" onclick="closeModalDirect()">✕</div>
+            <div class="img-container">
+                <img src="" id="modalImg" alt="Enlarged Memory">
+            </div>
+            <div class="photo-info">
+                <h3 class="photo-title" id="modalTitle">Judul Foto</h3>
+                <p class="photo-subtitle" id="modalSubtitle">Subjudul atau ucapan hangat untuk foto ini...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function triggerEntranceAnimation() {
+            document.body.classList.remove('page-enter', 'page-exit');
+            void document.body.offsetWidth;
+            document.body.classList.add('page-enter');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            triggerEntranceAnimation();
+        });
+
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                triggerEntranceAnimation();
+            }
+        });
+
+        function goBack(event) {
+            event.preventDefault();
+            document.body.classList.remove('page-enter');
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = 'pilihan.html';
+            }, 500);
+        }
+
+        const modalOverlay = document.getElementById('modalOverlay');
+        const letterModal = document.getElementById('letterModal');
+        const photoModal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const effectsContainer = document.getElementById('effectsContainer');
+
+        function launchCelebrationConfetti() {
+            if (typeof confetti !== 'function') return;
+
+            confetti({
+                particleCount: 80,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 50,
+                    angle: 60,
+                    spread: 70,
+                    origin: { x: 0, y: 0.7 }
+                });
+                confetti({
+                    particleCount: 50,
+                    angle: 120,
+                    spread: 70,
+                    origin: { x: 1, y: 0.7 }
+                });
+            }, 300);
+
+            /* Efek emoji melayang dibuat jedanya lebih senggang dan lambat */
+            const icons = ['🎈', '💖', '🎈', '❤️', '🎈', '💕'];
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'floating-element';
+                    el.innerText = icons[Math.floor(Math.random() * icons.length)];
+                    el.style.left = Math.random() * 85 + 5 + 'vw';
+                    el.style.animationDuration = (Math.random() * 2 + 5.5) + 's';
+                    effectsContainer.appendChild(el);
+
+                    setTimeout(() => {
+                        el.remove();
+                    }, 7000);
+                }, i * 250);
+            }
+        }
+
+        function openLetterModal() {
+            photoModal.classList.remove('active');
+            letterModal.classList.add('active');
+            modalOverlay.classList.add('active');
+            document.body.classList.add('modal-active');
+
+            launchCelebrationConfetti();
+        }
+
+        function openPhotoModal(element) {
+            const imgSrc = element.querySelector('img').src;
+            const title = element.getAttribute('data-title') || '';
+            const subtitle = element.getAttribute('data-subtitle') || '';
+
+            modalImg.src = imgSrc;
+            modalTitle.textContent = title;
+            modalSubtitle.textContent = subtitle;
+
+            letterModal.classList.remove('active');
+            photoModal.classList.add('active');
+            modalOverlay.classList.add('active');
+            document.body.classList.add('modal-active');
+        }
+
+        function closeModal(event) {
+            if (event.target === modalOverlay) {
+                closeModalDirect();
+            }
+        }
+
+        function closeModalDirect() {
+            modalOverlay.classList.remove('active');
+            document.body.classList.remove('modal-active');
+            setTimeout(() => {
+                letterModal.classList.remove('active');
+                photoModal.classList.remove('active');
+            }, 400);
+        }
+    </script>
+</body>
+</html>

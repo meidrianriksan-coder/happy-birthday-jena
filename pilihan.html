@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>These are for you</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-main: #0a192f;
+            --navy-dark: #020c1b;
+            --off-white-glow: rgba(248, 246, 240, 0.45);
+            --off-white-hover: rgba(248, 246, 240, 0.75);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #020c1b 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            color: #ffffff;
+            position: relative;
+
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(30, 58, 138, 0.2) 0%, rgba(10, 25, 47, 0.6) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body.page-fade-out {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+
+        @keyframes smoothEnter {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(25px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .title-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            color: #ffffff;
+            margin-bottom: 60px;
+            text-shadow: 0 4px 20px rgba(248, 246, 240, 0.3);
+            text-align: center;
+            z-index: 2;
+            animation: smoothEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .items-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 60px;
+            width: 100%;
+            max-width: 900px;
+            z-index: 2;
+        }
+
+        .item-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            opacity: 0;
+            animation: smoothEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .item-option:nth-child(1) { animation-delay: 0.2s; }
+        .item-option:nth-child(2) { animation-delay: 0.35s; }
+        .item-option:nth-child(3) { animation-delay: 0.5s; }
+
+        .item-icon-wrapper {
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            padding: 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            filter: drop-shadow(0 8px 18px var(--off-white-glow));
+            box-shadow: 0 4px 15px rgba(248, 246, 240, 0.15);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        filter 0.45s ease, 
+                        box-shadow 0.45s ease,
+                        background 0.3s ease;
+        }
+
+        .item-option:hover .item-icon-wrapper {
+            transform: translateY(-16px) scale(1.12) rotate(-2deg);
+            filter: drop-shadow(0 15px 30px var(--off-white-hover));
+            box-shadow: 0 12px 28px rgba(248, 246, 240, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .item-option:nth-child(2):hover .item-icon-wrapper {
+            transform: translateY(-16px) scale(1.12) rotate(2deg);
+        }
+
+        .item-label {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 0.8px;
+            text-shadow: 0 2px 10px rgba(248, 246, 240, 0.3);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .item-option:hover .item-label {
+            color: #fff9e6;
+            transform: translateY(-4px);
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        @media (max-width: 768px) {
+            .title-text {
+                font-size: 3.2rem;
+                margin-bottom: 40px;
+            }
+
+            .items-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 45px;
+            }
+
+            .item-icon-wrapper {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 12px;
+            }
+
+            .item-label {
+                font-size: 1.05rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <h1 class="title-text">These are for you</h1>
+
+    <div class="items-container">
+        
+        <div class="item-option" onclick="navigateTo('message.html')">
+            <div class="item-icon-wrapper">
+                <svg viewBox="0 0 120 90">
+                    <rect x="5" y="10" width="110" height="70" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                    <path d="M5,10 L60,50 L115,10" fill="none" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M5,80 L42,42" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                    <path d="M115,80 L78,42" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                    <circle cx="60" cy="48" r="11" fill="#dc2626" />
+                    <circle cx="60" cy="48" r="8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+                </svg>
+            </div>
+            <span class="item-label">Message</span>
+        </div>
+
+        <div class="item-option" onclick="navigateTo('flower.html')">
+            <div class="item-icon-wrapper">
+                <svg viewBox="0 0 100 110">
+                    <path d="M30,55 L50,102 L70,55 Z" fill="#fef3c7" stroke="#fde68a" stroke-width="2"/>
+                    <path d="M22,50 L50,102 L78,50 C70,45 30,45 22,50 Z" fill="#fffbebe6"/>
+                    <circle cx="32" cy="38" r="15" fill="#fda4af" />
+                    <circle cx="50" cy="28" r="17" fill="#f43f5e" />
+                    <circle cx="68" cy="38" r="15" fill="#fda4af" />
+                    <circle cx="50" cy="42" r="14" fill="#e11d48" />
+                    <circle cx="40" cy="32" r="12" fill="#fb7185" />
+                    <circle cx="60" cy="32" r="12" fill="#fb7185" />
+                    <path d="M42,75 C35,80 30,80 35,88 C42,88 46,80 50,78 C54,80 58,88 65,88 C70,80 65,80 58,75 Z" fill="#38bdf8"/>
+                    <circle cx="50" cy="76" r="4" fill="#0284c7"/>
+                </svg>
+            </div>
+            <span class="item-label">Flower</span>
+        </div>
+
+        <div class="item-option" onclick="navigateTo('cake.html')">
+            <div class="item-icon-wrapper">
+                <svg viewBox="0 0 110 100">
+                    <path d="M12,50 L98,28 L98,68 L12,85 Z" fill="#ffffff"/>
+                    <path d="M12,50 L55,20 L98,28 L12,50 Z" fill="#fef08a"/>
+                    <path d="M12,67 L98,48" stroke="#f43f5e" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M12,58 L98,38" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M52,22 C48,12 60,8 64,17 C69,13 73,21 64,26 Z" fill="#dc2626"/>
+                    <path d="M57,13 C55,8 53,7 50,8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                </svg>
+            </div>
+            <span class="item-label">Cake</span>
+        </div>
+
+    </div>
+
+    <script>
+        // Navigasi Pindah Halaman dengan Efek Fade Out
+        function navigateTo(targetUrl) {
+            document.body.classList.add('page-fade-out');
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 650);
+        }
+
+        // Pengaturan Tombol Back Browser menuju ucapan.html
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            window.location.href = "ucapan.html";
+        };
+
+        // Reset tampilan saat menggunakan BFCache (kembali/maju browser)
+        window.addEventListener('pageshow', (event) => {
+            document.body.classList.remove('page-fade-out');
+        });
+    </script>
+</body>
+</html>
