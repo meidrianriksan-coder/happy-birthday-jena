@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1280, initial-scale=1.0">
     <title>Music Section - BIRDS OF A FEATHER</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
@@ -22,17 +22,27 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            width: 100vw;
+            width: 1280px;
+            height: 720px;
             overflow: hidden;
             background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #020c1b 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: #ffffff;
             position: relative;
             opacity: 0;
             transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Pembungkus Skala Desktop untuk Tampilan HP */
+        .desktop-wrapper {
+            width: 1280px;
+            height: 720px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         body.page-enter {
@@ -78,16 +88,16 @@
         /* Tombol Kembali */
         .back-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 30px;
+            left: 40px;
             z-index: 20;
             background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 18px;
+            padding: 10px 22px;
             border-radius: 20px;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             backdrop-filter: blur(8px);
             transition: background 0.3s ease, color 0.3s ease, opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -100,8 +110,7 @@
         /* Container Utama */
         .music-container {
             position: relative;
-            width: 100%;
-            max-width: 1000px;
+            width: 1000px;
             height: 550px;
             display: flex;
             flex-direction: column;
@@ -319,74 +328,88 @@
             0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
             100% { transform: translateY(-15px) rotate(10deg); opacity: 1; }
         }
-
-        @media (max-width: 768px) {
-            .giant-vinyl {
-                width: 320px;
-                height: 320px;
-                left: -110px;
-            }
-            .mv-player-btn {
-                width: 90vw;
-                height: 230px;
-            }
-            .title-text {
-                font-size: 2.2rem;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <!-- MEMANGGIL FILE BIRDS-OF-A-FEATHER.MP3 -->
-    <audio id="bgSong" autoplay loop preload="auto">
-        <source src="/birds-of-a-feather.mp3.mp3" type="audio/mpeg">
-    </audio>
+    <!-- PEMBUNGKUS SKALA UNTUK HP & DESKTOP -->
+    <div class="desktop-wrapper" id="desktopWrapper">
 
-    <!-- TRIK PASIF UNTUK BROWSER -->
-    <iframe src="birds-of-a-feather.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+        <!-- MEMANGGIL FILE BIRDS-OF-A-FEATHER.MP3 -->
+        <audio id="bgSong" autoplay loop preload="auto">
+            <source src="/birds-of-a-feather.mp3.mp3" type="audio/mpeg">
+        </audio>
 
-    <!-- 1. Tombol Kembali -->
-    <a href="cake.html" class="back-btn fade-element delay-1" onclick="goBack(event)">← Kembali</a>
+        <!-- TRIK PASIF UNTUK BROWSER -->
+        <iframe src="birds-of-a-feather.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
 
-    <div class="music-container">
-        <!-- 2. Judul Teks -->
-        <h1 class="title-text fade-element delay-2">This song reminds me of you</h1>
+        <!-- 1. Tombol Kembali -->
+        <a href="cake.html" class="back-btn fade-element delay-1" onclick="goBack(event)">← Kembali</a>
 
-        <!-- 3. Piringan Hitam Besar -->
-        <div class="giant-vinyl fade-vinyl delay-3" id="vinylDisc">
-            <div class="vinyl-inner-circle"></div>
-        </div>
+        <div class="music-container">
+            <!-- 2. Judul Teks -->
+            <h1 class="title-text fade-element delay-2">This song reminds me of you</h1>
 
-        <!-- 4. Player Card MV YouTube -->
-        <a href="https://www.youtube.com/watch?v=V9PVRfjEBTI" target="_blank" class="mv-player-btn fade-element delay-4">
-            <img src="https://img.youtube.com/vi/V9PVRfjEBTI/maxresdefault.jpg" alt="Billie Eilish - BIRDS OF A FEATHER" class="mv-poster">
-            
-            <div class="player-overlay">
-                <div class="video-header-info">
-                    <div class="yt-logo-icon">▶</div>
-                    <span class="video-title-text">Billie Eilish - BIRDS OF A FEATHER (Official Music Video)</span>
-                </div>
-
-                <div class="center-play-icon">
-                    <div class="play-triangle"></div>
-                </div>
-
-                <div class="yt-watermark">
-                    Watch on YouTube
-                </div>
+            <!-- 3. Piringan Hitam Besar -->
+            <div class="giant-vinyl fade-vinyl delay-3" id="vinylDisc">
+                <div class="vinyl-inner-circle"></div>
             </div>
-        </a>
 
-        <!-- 5. Notasi Musik -->
-        <div class="music-notes fade-element delay-5">
-            <span>♫</span>
-            <span style="margin-left: 15px;">♪</span>
-            <span>♩</span>
+            <!-- 4. Player Card MV YouTube -->
+            <a href="https://www.youtube.com/watch?v=V9PVRfjEBTI" target="_blank" class="mv-player-btn fade-element delay-4">
+                <img src="https://img.youtube.com/vi/V9PVRfjEBTI/maxresdefault.jpg" alt="Billie Eilish - BIRDS OF A FEATHER" class="mv-poster">
+                
+                <div class="player-overlay">
+                    <div class="video-header-info">
+                        <div class="yt-logo-icon">▶</div>
+                        <span class="video-title-text">Billie Eilish - BIRDS OF A FEATHER (Official Music Video)</span>
+                    </div>
+
+                    <div class="center-play-icon">
+                        <div class="play-triangle"></div>
+                    </div>
+
+                    <div class="yt-watermark">
+                        Watch on YouTube
+                    </div>
+                </div>
+            </a>
+
+            <!-- 5. Notasi Musik -->
+            <div class="music-notes fade-element delay-5">
+                <span>♫</span>
+                <span style="margin-left: 15px;">♪</span>
+                <span>♩</span>
+            </div>
         </div>
+
     </div>
 
     <script>
+        // Skrip Skala Otomatis agar Tampilan HP Plek-Ketiplek Desktop Tanpa Merusak Desktop
+        function adjustScale() {
+            const wrapper = document.getElementById('desktopWrapper');
+            const targetWidth = 1280;
+            const targetHeight = 720;
+            
+            let scaleX = window.innerWidth / targetWidth;
+            let scaleY = window.innerHeight / targetHeight;
+            let scale = Math.min(scaleX, scaleY);
+
+            // Jika dibuka di HP atau layar lebih kecil dari 1280px, skalakan proporsional
+            if (window.innerWidth < 1280) {
+                scale = window.innerWidth / targetWidth;
+                wrapper.style.transform = `scale(${scale})`;
+                document.body.style.height = `${targetHeight * scale}px`;
+            } else {
+                wrapper.style.transform = 'scale(1)';
+                document.body.style.height = `${targetHeight}px`;
+            }
+        }
+
+        window.addEventListener('resize', adjustScale);
+        window.addEventListener('DOMContentLoaded', adjustScale);
+
         const song = document.getElementById('bgSong');
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -403,7 +426,6 @@
                     console.log("Lagu birds-of-a-feather.mp3 berhasil diputar!");
                 }).catch(error => {
                     console.log("Autoplay ditahan browser. Menunggu interaksi pertama...");
-                    // Jika ditahan browser, lagu diputar otomatis pada gerakan/sentuhan/klik pertama di layar
                     const enableAudio = () => {
                         song.play();
                         window.removeEventListener('click', enableAudio);
