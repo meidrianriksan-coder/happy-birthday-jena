@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cake Section - Scrapbook</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Sacramento&family=Caveat:wght@600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -30,7 +29,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px 20px;
+            padding: 20px 10px;
             color: #ffffff;
             position: relative;
 
@@ -120,16 +119,18 @@
             color: var(--navy-dark);
         }
 
-        /* Container Canvas Utama */
+        /* Container Canvas Utama yang Mengunci Layout Desktop */
         .canvas {
-            width: 100%;
-            max-width: 1100px;
+            width: 1100px;
             height: 600px;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2;
+            transform-origin: center center;
+            /* Skala otomatis menyesuaikan lebar layar perangkat */
+            transform: scale(min(1, calc(100vw / 1150)));
         }
 
         /* Hover Feedback untuk Elemen Foto */
@@ -529,14 +530,6 @@
             background: #ffffff;
             color: #000;
         }
-
-        @media (max-width: 900px) {
-            .canvas { transform: scale(0.75); }
-        }
-
-        @media (max-width: 600px) {
-            .canvas { transform: scale(0.5); }
-        }
     </style>
 </head>
 <body>
@@ -548,26 +541,23 @@
     <div class="canvas">
         <div class="plaid-paper"></div>
 
-        <!-- Stamp Frame -->
         <div class="stamp-frame">
             <span class="ribbon">🎀</span>
             <div class="stamp-inner">
-                <img src="/our memories miror.PNG" alt="Photo 2" class="clickable-photo" onclick="openModal(this.src)">
+                <img src="our memories miror.PNG" alt="Photo 2" class="clickable-photo" onclick="openModal(this.src)">
             </div>
         </div>
 
-        <!-- Clipboard Card -->
         <div class="clipboard-card">
             <div class="clip"></div>
             <div class="clipboard-img">
-                <img src="/our memories good.jpeg" alt="Photo 3" class="clickable-photo" onclick="openModal(this.src)">
+                <img src="our memories good.jpeg" alt="Photo 3" class="clickable-photo" onclick="openModal(this.src)">
             </div>
         </div>
 
-        <!-- Frame TV Retro -->
         <div class="retro-tv">
             <div class="tv-screen">
-                <img src="/our memories 1.1.jpeg" alt="Photo 1" class="clickable-photo" onclick="openModal(this.src)">
+                <img src="our memories 1.1.jpeg" alt="Photo 1" class="clickable-photo" onclick="openModal(this.src)">
             </div>
             <div class="tv-controls">
                 <div class="tv-dial"></div>
@@ -577,7 +567,6 @@
             </div>
         </div>
 
-        <!-- Vinyl Music Button Wrapper -->
         <div class="vinyl-btn-wrapper">
             <div class="vinyl-btn" onclick="toggleMusic()">
                 <div class="vinyl-center"></div>
@@ -590,34 +579,28 @@
             </div>
         </div>
 
-        <!-- Container Tanda Panah Kanan Bawah + Catatan di Samping -->
         <div class="arrow-note-container">
             <svg class="hand-drawn-arrow" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Garis panah melengkung ke kiri atas menuju piringan hitam -->
                 <path class="arrow-line" d="M 85,80 C 70,50 45,35 20,22" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" fill="none" />
-                <!-- Kepala panah -->
                 <path d="M 32,14 L 15,18 L 20,36" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
             </svg>
             <div class="cute-note">klik piringan hitamnya!</div>
         </div>
 
-        <!-- Teks Script Aesthetic -->
         <div class="cursive-decor">
             our memories
         </div>
 
-        <!-- Grid Foto Polaroid (Kanan) -->
         <div class="photo-grid-right">
-            <div class="grid-item"><img src="/our memories juring.jpeg" alt="Photo 4" class="clickable-photo" onclick="openModal(this.src)"></div>
-            <div class="grid-item"><img src="/our memories nothing.jpeg" alt="Photo 5" class="clickable-photo" onclick="openModal(this.src)"></div>
-            <div class="grid-item"><img src="/our memories aib jena.jpeg" alt="Photo 6" class="clickable-photo" onclick="openModal(this.src)"></div>
-            <div class="grid-item"><img src="/live tiktok.jpg" alt="Photo 7" class="clickable-photo" onclick="openModal(this.src)"></div>
-            <div class="grid-item"><img src="/rumah jena.jpg" alt="Photo 8" class="clickable-photo" onclick="openModal(this.src)"></div>
-            <div class="grid-item"><img src="/our memories cute.jpeg" alt="Photo 9" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="our memories juring.jpeg" alt="Photo 4" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="our memories nothing.jpeg" alt="Photo 5" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="our memories aib jena.jpeg" alt="Photo 6" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="live tiktok.jpg" alt="Photo 7" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="rumah jena.jpg" alt="Photo 8" class="clickable-photo" onclick="openModal(this.src)"></div>
+            <div class="grid-item"><img src="our memories cute.jpeg" alt="Photo 9" class="clickable-photo" onclick="openModal(this.src)"></div>
         </div>
     </div>
 
-    <!-- Lightbox Modal Pop-Up -->
     <div class="modal-overlay" id="photoModal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-close" onclick="closeModal()">&times;</div>
