@@ -15,9 +15,10 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             width: 100vw;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto; /* Mencegah elemen terpotong di HP layar pendek */
             position: relative;
             display: flex;
             justify-content: center;
@@ -33,17 +34,17 @@
         /* Efek Transisi Keluar saat Tombol Diklik */
         body.page-exit {
             opacity: 0;
-            transform: scale(1.05); /* Sedikit zoom-in agar transisi terasa cinematic */
+            transform: scale(1.05); /* Zoom-in cinematic */
             pointer-events: none;
         }
 
         .dim-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.35);
             z-index: 1;
         }
 
@@ -52,12 +53,14 @@
             z-index: 2;
             text-align: center;
             color: #ffffff;
-            padding: 0 20px;
+            padding: 40px 20px;
             max-width: 900px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 16px; /* Jarak fleksibel antar elemen */
         }
 
         .date-text {
@@ -65,16 +68,14 @@
             font-weight: 400;
             letter-spacing: 3px;
             color: #f0f9ff;
-            margin-bottom: 8px;
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
         }
 
         .hbd-title {
             font-family: 'Great Vibes', cursive;
-            font-size: 4.5rem;
+            font-size: clamp(2.8rem, 8vw, 4.5rem); /* Ukuran teks responsif */
             font-weight: 400;
-            line-height: 1.25;
-            margin-bottom: 15px;
+            line-height: 1.2;
             color: #ffffff;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
             text-align: center;
@@ -92,64 +93,61 @@
             color: #f1f5f9;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
             text-align: center;
+            margin-bottom: 10px; /* Jarak menuju tombol */
         }
 
+        /* Pembungkus Tombol Fleksibel */
         .bottom-action {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            text-align: center;
+            margin-top: 10px;
         }
 
         .btn-click-here {
             background: rgba(255, 255, 255, 0.25);
             color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            padding: 10px 26px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            padding: 12px 30px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
             display: inline-block;
         }
 
-        .btn-click-here:hover {
-            background: rgba(255, 255, 255, 0.9);
+        .btn-click-here:hover, .btn-click-here:active {
+            background: rgba(255, 255, 255, 0.95);
             color: #0284c7;
             transform: translateY(-2px);
         }
 
+        /* Doodle Samping */
         .doodle-gift {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            width: 85px;
-            opacity: 0.85;
-            z-index: 2;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-        }
-
-        .doodle-balloons {
-            position: absolute;
-            bottom: 35px;
-            right: 30px;
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
             width: 75px;
             opacity: 0.85;
             z-index: 2;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            pointer-events: none;
+        }
+
+        .doodle-balloons {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 65px;
+            opacity: 0.85;
+            z-index: 2;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            pointer-events: none;
         }
 
         @media (max-width: 768px) {
-            .hbd-title {
-                font-size: 3rem;
-                line-height: 1.3;
-            }
             .hbd-title span.break-mobile {
                 display: block;
             }
@@ -157,20 +155,17 @@
                 font-size: 0.95rem;
             }
             .sub-message {
-                font-size: 0.85rem;
+                font-size: 0.88rem;
             }
             .doodle-gift {
-                width: 60px;
-                bottom: 20px;
+                width: 50px;
+                bottom: 15px;
                 left: 15px;
             }
             .doodle-balloons {
-                width: 55px;
-                bottom: 25px;
+                width: 45px;
+                bottom: 15px;
                 right: 15px;
-            }
-            .bottom-action {
-                bottom: 30px;
             }
         }
     </style>
@@ -186,6 +181,11 @@
             <span class="break-mobile">Zainatul Mukaromah!</span>
         </h1>
         <p class="sub-message">I hope this little gift will make you happy 🤍</p>
+        
+        <!-- Tombol dimasukkan ke dalam flex container agar tidak menimpa elemen lain -->
+        <div class="bottom-action">
+            <a href="pilihan.html" class="btn-click-here" onclick="navigateToPilihan(event)">Click here</a>
+        </div>
     </div>
 
     <!-- Doodle Kado -->
@@ -212,11 +212,6 @@
         <path d="M68,67 Q72,78 52,90" />
     </svg>
 
-    <!-- Tombol Click Here -->
-    <div class="bottom-action">
-        <a href="pilihan.html" class="btn-click-here" onclick="navigateToPilihan(event)">Click here</a>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
         window.onload = () => {
@@ -230,10 +225,8 @@
 
         function navigateToPilihan(event) {
             event.preventDefault();
-            // Tambahkan kelas page-exit untuk memulai animasi CSS
             document.body.classList.add('page-exit');
             
-            // Pindah halaman tepat setelah animasi CSS selesai (800ms)
             setTimeout(() => {
                 window.location.href = 'pilihan.html';
             }, 750); 
